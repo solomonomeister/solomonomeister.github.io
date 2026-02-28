@@ -15,12 +15,13 @@
         .money-label { font-feature-settings: "tnum"; }
         th, td { white-space: nowrap; }
         .table-header { font-size: 10px; letter-spacing: 0.5px; }
+        .full-canvas { height: 100vh; }
     </style>
 </head>
-<body class="bg-[#0a0a0a] text-white min-h-screen">
-    <div class="max-w-screen-2xl mx-auto px-8">
+<body class="bg-[#0a0a0a] text-white full-canvas overflow-hidden flex flex-col">
+    <div class="flex flex-col h-full">
         <!-- HEADER -->
-        <header class="flex items-center justify-between py-8 border-b border-zinc-800">
+        <header class="flex items-center justify-between py-8 px-8 border-b border-zinc-800 bg-[#0a0a0a]">
             <div class="flex items-center gap-x-4">
                 <div class="w-9 h-9 bg-indigo-600 rounded-2xl flex items-center justify-center text-2xl font-bold shadow-inner">B</div>
                 <div>
@@ -38,58 +39,61 @@
             </div>
         </header>
 
-        <!-- SUMMARY -->
-        <div id="summary" class="grid grid-cols-5 gap-6 mt-10"></div>
+        <!-- MAIN CONTENT AREA -->
+        <div class="flex-1 overflow-auto p-8">
+            <!-- SUMMARY -->
+            <div id="summary" class="grid grid-cols-5 gap-6"></div>
 
-        <div class="grid grid-cols-12 gap-8 mt-14">
-            <!-- LEFT: INPUTS (1/3) -->
-            <div class="col-span-4">
-                <div class="sticky top-8">
-                    <div class="flex items-center gap-x-3 mb-8">
-                        <i class="fa-solid fa-sliders text-indigo-400 text-2xl"></i>
-                        <h2 class="text-2xl font-semibold tracking-tight">PROJECT INPUTS</h2>
+            <div class="grid grid-cols-12 gap-8 mt-10">
+                <!-- LEFT: INPUTS (1/3) -->
+                <div class="col-span-4">
+                    <div class="sticky top-8">
+                        <div class="flex items-center gap-x-3 mb-8">
+                            <i class="fa-solid fa-sliders text-indigo-400 text-2xl"></i>
+                            <h2 class="text-2xl font-semibold tracking-tight">PROJECT INPUTS</h2>
+                        </div>
+                        <div id="inputs-container" class="space-y-4"></div>
                     </div>
-                    <div id="inputs-container" class="space-y-4"></div>
-                </div>
-            </div>
-
-            <!-- RIGHT: CHART + TABLE (2/3) -->
-            <div class="col-span-8 space-y-8">
-                <!-- PROJECTED CASH ON HAND CHART -->
-                <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-8">
-                    <div class="flex justify-between items-baseline mb-6">
-                        <h3 class="font-semibold text-lg">Projected Cash on Hand</h3>
-                        <div class="text-xs text-zinc-500 font-mono">MAR 26 — AUG 28</div>
-                    </div>
-                    <canvas id="cashChart" height="365"></canvas>
                 </div>
 
-                <!-- DETAILED TIMELINE TABLE -->
-                <div class="bg-zinc-900 border border-zinc-800 rounded-3xl overflow-hidden">
-                    <div class="px-8 py-6 border-b border-zinc-800 flex items-center justify-between bg-zinc-950">
-                        <h3 class="font-semibold text-lg">30-Month Detailed Cashflow</h3>
-                        <div class="text-xs uppercase tracking-widest text-zinc-500">All values at month end • Costs shown as positive outflows</div>
+                <!-- RIGHT: CHART + TABLE (2/3) -->
+                <div class="col-span-8 space-y-8">
+                    <!-- PROJECTED CASH ON HAND CHART -->
+                    <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-8">
+                        <div class="flex justify-between items-baseline mb-6">
+                            <h3 class="font-semibold text-lg">Projected Cash on Hand</h3>
+                            <div class="text-xs text-zinc-500 font-mono">MAR 26 — AUG 28</div>
+                        </div>
+                        <canvas id="cashChart" height="365"></canvas>
                     </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-sm" id="timeline-table">
-                            <thead class="sticky top-0 bg-zinc-900 border-b border-zinc-700 z-10">
-                                <tr class="text-left text-zinc-400 table-header">
-                                    <th class="px-6 py-4 font-medium w-28">MONTH</th>
-                                    <th class="px-6 py-4 font-medium text-emerald-400">INCOME</th>
-                                    <th class="px-6 py-4 font-medium">Living expenses</th>
-                                    <th class="px-6 py-4 font-medium">Primary loan setup</th>
-                                    <th class="px-6 py-4 font-medium">Primary loan repayments</th>
-                                    <th class="px-6 py-4 font-medium">Demolition</th>
-                                    <th class="px-6 py-4 font-medium">Pre-construction</th>
-                                    <th class="px-6 py-4 font-medium">Construction loan setup</th>
-                                    <th class="px-6 py-4 font-medium">Construction loan repayments</th>
-                                    <th class="px-6 py-4 font-medium">Construction</th>
-                                    <th class="px-6 py-4 font-medium text-rose-400">TOTAL COSTS</th>
-                                    <th class="px-6 py-4 font-medium">CASH ON HAND</th>
-                                </tr>
-                            </thead>
-                            <tbody id="timeline-body" class="divide-y divide-zinc-800 font-mono text-zinc-300"></tbody>
-                        </table>
+
+                    <!-- DETAILED TIMELINE TABLE -->
+                    <div class="bg-zinc-900 border border-zinc-800 rounded-3xl overflow-hidden">
+                        <div class="px-8 py-6 border-b border-zinc-800 flex items-center justify-between bg-zinc-950">
+                            <h3 class="font-semibold text-lg">30-Month Detailed Cashflow</h3>
+                            <div class="text-xs uppercase tracking-widest text-zinc-500">All values at month end • Costs shown as positive outflows</div>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm" id="timeline-table">
+                                <thead class="sticky top-0 bg-zinc-900 border-b border-zinc-700 z-10">
+                                    <tr class="text-left text-zinc-400 table-header">
+                                        <th class="px-6 py-4 font-medium w-28">MONTH</th>
+                                        <th class="px-6 py-4 font-medium text-emerald-400">INCOME</th>
+                                        <th class="px-6 py-4 font-medium">Living expenses</th>
+                                        <th class="px-6 py-4 font-medium">Primary loan setup</th>
+                                        <th class="px-6 py-4 font-medium">Primary loan repayments</th>
+                                        <th class="px-6 py-4 font-medium">Demolition</th>
+                                        <th class="px-6 py-4 font-medium">Pre-construction</th>
+                                        <th class="px-6 py-4 font-medium">Construction loan setup</th>
+                                        <th class="px-6 py-4 font-medium">Construction loan repayments</th>
+                                        <th class="px-6 py-4 font-medium">Construction</th>
+                                        <th class="px-6 py-4 font-medium text-rose-400">TOTAL COSTS</th>
+                                        <th class="px-6 py-4 font-medium">CASH ON HAND</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="timeline-body" class="divide-y divide-zinc-800 font-mono text-zinc-300"></tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -108,18 +112,6 @@
             if (price <= 960000) return 2870 + (price - 130000) * 0.06;
             return 52070 + (price - 960000) * 0.055;
         }
-
-        let inputs = {
-            purchasePrice: 1050000, settlementDays: 60, conveyancing: 2500, prePurchaseCash: 500000,
-            interestRate: 6.0, surveyor: 2500, structuralEngineer: 2500, insurance: 1500,
-            dilapidationReport: 1500, soilTest: 1000, demolitionWorks: 30000, makeGoodWorks: 3750,
-            architecturePlans: 22500, engineeringPlans: 12500,
-            slab: 100000, frame: 125000, roof: 75000, internal: 150000, finishing: 50000,
-            rentPerWeek: 500, livingExpenses: 3750, contingency: 15,
-            djTint: 8000, alexTint: 6000, djRodeo: 4000
-        };
-
-        let cashChartInstance = null;
 
         function createSlider(id, min, max, step, def, label, suffix = '', percent = false) {
             return `
@@ -178,10 +170,11 @@
                 createSlider('roof',42000,117000,1000,75000,'Roof / Lock-up') +
                 createSlider('internal',84000,234000,1000,150000,'Internal Fit-out') +
                 createSlider('finishing',28000,78000,1000,50000,'Finishing / Handover')));
-            // Holding
+            // Holding & Living Costs
             c.appendChild(createDetails('Holding & Living Costs', 'fa-key', 
                 createSlider('rentPerWeek',0,1000,10,500,'Rent per week','/wk') +
                 createSlider('livingExpenses',2500,5000,100,3750,'Living Expenses monthly') +
+                createSlider('rentStartMonth',0,12,1,3,'Rent Starts On Month') +
                 createSlider('contingency',10,20,1,15,'Contingency % (demo + build)','%',true)));
             // Income
             c.appendChild(createDetails('Monthly Income', 'fa-sack-dollar', 
@@ -194,9 +187,10 @@
                     s.addEventListener('input', () => {
                         const v = document.getElementById(s.id + 'Val');
                         const val = parseFloat(s.value);
-                        if (['interestRate','contingency'].includes(s.id)) v.textContent = val + '%';
+                        if (s.id === 'interestRate' || s.id === 'contingency') v.textContent = val + '%';
                         else if (s.id === 'settlementDays') v.textContent = val + ' days';
                         else if (s.id === 'rentPerWeek') v.textContent = '$' + val + '/wk';
+                        else if (s.id === 'rentStartMonth') v.textContent = val + (val === 1 ? ' month' : ' months');
                         else v.textContent = formatMoney(val);
                         debounceCalculate();
                     });
@@ -230,12 +224,15 @@
                 finishing: parseFloat(document.getElementById('finishing').value),
                 rentPerWeek: parseFloat(document.getElementById('rentPerWeek').value),
                 livingExpenses: parseFloat(document.getElementById('livingExpenses').value),
+                rentStartMonth: parseFloat(document.getElementById('rentStartMonth').value),
                 contingency: parseFloat(document.getElementById('contingency').value),
                 djTint: parseFloat(document.getElementById('djTint').value),
                 alexTint: parseFloat(document.getElementById('alexTint').value),
                 djRodeo: parseFloat(document.getElementById('djRodeo').value)
             };
         }
+
+        let cashChartInstance = null;
 
         function calculateAndRenderAll() {
             const inp = getCurrentInputs();
@@ -250,19 +247,17 @@
             const totalProjectCost = inp.purchasePrice + stampDuty + inp.conveyancing + totalDemo + preRaw + totalBuild;
 
             const monthlyRent = Math.round(inp.rentPerWeek * 52 / 12);
-            const monthlyLiving = monthlyRent + inp.livingExpenses;
             const monthlyIncome = inp.djTint + inp.alexTint + inp.djRodeo;
 
             const purchaseLoan = Math.round(inp.purchasePrice * 0.8);
             const constructionLoan = Math.round(totalBuild * 0.8);
-            const totalLoan = purchaseLoan + constructionLoan;
             const monthlyRate = inp.interestRate / 1200;
 
-            let monthlyPI = 0;
-            if (totalLoan > 0) {
+            let monthlyPI_construction = 0;
+            if (constructionLoan > 0) {
                 const r = monthlyRate;
                 const n = 360;
-                monthlyPI = Math.round(totalLoan * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1));
+                monthlyPI_construction = Math.round(constructionLoan * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1));
             }
 
             const settlementMonth = Math.ceil(inp.settlementDays / 30);
@@ -270,50 +265,52 @@
 
             let cash = inp.prePurchaseCash;
             const rows = [];
-            let minCash = cash;
             let currentDate = new Date(2026, 2, 1);
 
             for (let m = 1; m <= 30; m++) {
                 let income = monthlyIncome;
-                let living = monthlyLiving;
+                let livingExpensesColumn = inp.livingExpenses + (m >= inp.rentStartMonth ? monthlyRent : 0);
                 let primarySetup = (m === settlementMonth) ? purchaseDeposit : 0;
-                let primaryRepay = 0;
+                let primaryRepay = (m >= settlementMonth) ? Math.round(purchaseLoan * monthlyRate) : 0;
                 let demolition = (m >= demoStart && m < demoStart + 3) ? Math.round(totalDemo / 3) : 0;
                 let preConstruction = (m === 6) ? preRaw : 0;
                 let constructionSetup = (m === 7) ? buildDeposit : 0;
                 let constructionRepay = 0;
-                let construction = 0;   // no staged cash outflow in original model
+                let construction = 0;
 
-                // Loan repayments
-                if (m >= settlementMonth) {
+                if (m >= 7) {
                     if (m < 26) {
-                        primaryRepay = Math.round(purchaseLoan * monthlyRate);
-                        if (m >= 7) constructionRepay = Math.round(constructionLoan * monthlyRate);
+                        constructionRepay = Math.round(constructionLoan * monthlyRate);
                     } else {
-                        // prorated full P+I
-                        primaryRepay = Math.round(monthlyPI * (purchaseLoan / totalLoan || 0));
-                        constructionRepay = Math.round(monthlyPI * (constructionLoan / totalLoan || 0));
+                        constructionRepay = monthlyPI_construction;
                     }
                 }
 
-                const totalCosts = living + primarySetup + primaryRepay + demolition + preConstruction + constructionSetup + constructionRepay + construction;
+                const totalCosts = livingExpensesColumn + primarySetup + primaryRepay + demolition + preConstruction + constructionSetup + constructionRepay + construction;
 
                 const net = income - totalCosts;
                 cash = Math.round(cash + net);
 
-                if (cash < minCash) minCash = cash;
-
                 const monthLabel = currentDate.toLocaleString('en-US', {month:'short'}).toUpperCase() + ' ' + currentDate.getFullYear().toString().slice(2);
                 rows.push({
                     month: monthLabel,
-                    income, living, primarySetup, primaryRepay, demolition, preConstruction,
-                    constructionSetup, constructionRepay, construction, totalCosts, cashOnHand: cash
+                    income,
+                    living: livingExpensesColumn,
+                    primarySetup,
+                    primaryRepay,
+                    demolition,
+                    preConstruction,
+                    constructionSetup,
+                    constructionRepay,
+                    construction,
+                    totalCosts,
+                    cashOnHand: cash
                 });
 
                 currentDate.setMonth(currentDate.getMonth() + 1);
             }
 
-            renderSummary(inp.prePurchaseCash, monthlyIncome, minCash, totalProjectCost);
+            renderSummary(inp.prePurchaseCash, monthlyIncome, Math.min(...rows.map(r => r.cashOnHand)), totalProjectCost);
             renderChart(rows);
             renderDetailedTable(rows);
         }
@@ -366,7 +363,7 @@
             tbody.innerHTML = '';
             rows.forEach(r => {
                 const tr = document.createElement('tr');
-                tr.className = `table-row hover:bg-zinc-800/70 ${r.cashOnHand < 0 ? 'bg-red-950/30' : ''}`;
+                tr.className = `hover:bg-zinc-800/70 ${r.cashOnHand < 0 ? 'bg-red-950/30' : ''}`;
                 tr.innerHTML = `
                     <td class="px-6 py-4 font-medium">${r.month}</td>
                     <td class="px-6 py-4 text-emerald-400">${formatMoney(r.income)}</td>
@@ -386,10 +383,10 @@
 
         function exportCSV() {
             const inp = getCurrentInputs();
-            // full recalc (same as above) omitted for brevity – would generate full CSV with all columns
-            const csvContent = "data:text/csv;charset=utf-8,Month,Income,Living expenses,Primary loan setup,Primary loan repayments,Demolition,Pre-construction,Construction loan setup,Construction loan repayments,Construction,Total costs,Cash on Hand\n" +
-                "MAR 26,8000,4250,0,0,0,0,0,0,0,4250,500000\n..."; // placeholder
-            const encodedUri = encodeURI(csvContent);
+            let csv = "Month,Income,Living expenses,Primary loan setup,Primary loan repayments,Demolition,Pre-construction,Construction loan setup,Construction loan repayments,Construction,Total costs,Cash on Hand\n";
+            // Simplified placeholder for CSV export - in production would recalculate full rows
+            csv += "MAR 26,8000,4250,0,0,0,0,0,0,0,4250,500000\n";
+            const encodedUri = encodeURI("data:text/csv;charset=utf-8," + csv);
             const link = document.createElement("a");
             link.setAttribute("href", encodedUri);
             link.setAttribute("download", "BurnTrack_Detailed_Cashflow.csv");
@@ -401,7 +398,7 @@
         function resetApp() { location.reload(); }
 
         window.onload = () => {
-            console.log('%cBurnTrack v10 ready – detailed cashflow mode active', 'color:#6366f1;font-family:monospace');
+            console.log('%cBurnTrack v10 full-canvas ready', 'color:#6366f1;font-family:monospace;font-size:13px');
             renderInputs();
             setTimeout(calculateAndRenderAll, 220);
         };
